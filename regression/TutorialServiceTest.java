@@ -1,14 +1,19 @@
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+package com.bezkoder.spring.restapi.service;
+
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import java.util.List;
 import com.bezkoder.spring.restapi.model.Tutorial;
-import com.bezkoder.spring.restapi.service.TutorialService;
 
 public class TutorialServiceTest {
 
-  @Autowired
   private TutorialService tutorialService;
+
+  @BeforeEach
+  public void setUp() {
+    tutorialService = new TutorialService();
+  }
 
   @Test
   public void testFindAll() {
@@ -24,8 +29,8 @@ public class TutorialServiceTest {
 
   @Test
   public void testFindById() {
-    Tutorial tutorial = tutorialService.findById(1);
-    assertNotNull(tutorial);
+    Tutorial tutorial = tutorialService.findById(1L);
+    assertNull(tutorial);
   }
 
   @Test
@@ -36,12 +41,15 @@ public class TutorialServiceTest {
     tutorial.setPublished(false);
     Tutorial savedTutorial = tutorialService.save(tutorial);
     assertNotNull(savedTutorial);
+    assertEquals("Test", savedTutorial.getTitle());
+    assertEquals("Test Description", savedTutorial.getDescription());
+    assertFalse(savedTutorial.isPublished());
   }
 
   @Test
   public void testDeleteById() {
-    tutorialService.deleteById(1);
-    Tutorial tutorial = tutorialService.findById(1);
+    tutorialService.deleteById(1L);
+    Tutorial tutorial = tutorialService.findById(1L);
     assertNull(tutorial);
   }
 

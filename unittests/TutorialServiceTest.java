@@ -1,9 +1,10 @@
+package com.bezkoder.spring.restapi.service;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import com.bezkoder.spring.restapi.model.Tutorial;
-import com.bezkoder.spring.restapi.service.TutorialService;
 
 public class TutorialServiceTest {
 
@@ -22,14 +23,16 @@ public class TutorialServiceTest {
 
   @Test
   public void testFindByTitleContaining() {
-    List<Tutorial> tutorials = tutorialService.findByTitleContaining("Test");
+    String title = "Test";
+    List<Tutorial> tutorials = tutorialService.findByTitleContaining(title);
     assertNotNull(tutorials);
   }
 
   @Test
   public void testFindById() {
-    Tutorial tutorial = tutorialService.findById(1L);
-    assertNull(tutorial);
+    long id = 1;
+    Tutorial tutorial = tutorialService.findById(id);
+    assertNotNull(tutorial);
   }
 
   @Test
@@ -43,8 +46,9 @@ public class TutorialServiceTest {
 
   @Test
   public void testDeleteById() {
-    tutorialService.deleteById(1L);
-    Tutorial tutorial = tutorialService.findById(1L);
+    long id = 1;
+    tutorialService.deleteById(id);
+    Tutorial tutorial = tutorialService.findById(id);
     assertNull(tutorial);
   }
 
@@ -57,7 +61,8 @@ public class TutorialServiceTest {
 
   @Test
   public void testFindByPublished() {
-    List<Tutorial> tutorials = tutorialService.findByPublished(true);
+    boolean isPublished = true;
+    List<Tutorial> tutorials = tutorialService.findByPublished(isPublished);
     assertNotNull(tutorials);
   }
 }

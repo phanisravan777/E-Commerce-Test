@@ -1,3 +1,5 @@
+package com.bezkoder.spring.restapi.model;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,15 +23,15 @@ public class TutorialTest {
   @Test
   public void testSetTitle() {
     Tutorial tutorial = new Tutorial();
-    tutorial.setTitle("New title");
-    assertEquals("New title", tutorial.getTitle());
+    tutorial.setTitle("Test title");
+    assertEquals("Test title", tutorial.getTitle());
   }
 
   @Test
   public void testSetDescription() {
     Tutorial tutorial = new Tutorial();
-    tutorial.setDescription("New description");
-    assertEquals("New description", tutorial.getDescription());
+    tutorial.setDescription("Test description");
+    assertEquals("Test description", tutorial.getDescription());
   }
 
   @Test

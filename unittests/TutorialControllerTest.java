@@ -1,9 +1,13 @@
+package com.bezkoder.spring.restapi.controller;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.bezkoder.spring.restapi.controller.TutorialController;
 import com.bezkoder.spring.restapi.model.Tutorial;
 import com.bezkoder.spring.restapi.service.TutorialService;
 
@@ -29,53 +32,75 @@ public class TutorialControllerTest {
 
   @Test
   public void testGetAllTutorials() {
-    when(tutorialService.findAll()).thenReturn(Arrays.asList(new Tutorial()));
+    Tutorial tutorial = new Tutorial("Test", "Test description", false);
+    when(tutorialService.findAll()).thenReturn(Arrays.asList(tutorial));
+
     ResponseEntity<List<Tutorial>> response = tutorialController.getAllTutorials(null);
+
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(1, response.getBody().size());
+    assertEquals(tutorial, response.getBody().get(0));
   }
 
   @Test
   public void testGetTutorialById() {
-    when(tutorialService.findById(1L)).thenReturn(new Tutorial());
+    Tutorial tutorial = new Tutorial("Test", "Test description", false);
+    when(tutorialService.findById(1L)).thenReturn(tutorial);
+
     ResponseEntity<Tutorial> response = tutorialController.getTutorialById(1L);
+
     assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(tutorial, response.getBody());
   }
 
   @Test
   public void testCreateTutorial() {
-    when(tutorialService.save(any(Tutorial.class))).thenReturn(new Tutorial());
-    ResponseEntity<Tutorial> response = tutorialController.createTutorial(new Tutorial());
+    Tutorial tutorial = new Tutorial("Test", "Test description", false);
+    when(tutorialService.save(any(Tutorial.class))).thenReturn(tutorial);
+
+    ResponseEntity<Tutorial> response = tutorialController.createTutorial(tutorial);
+
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
+    assertEquals(tutorial, response.getBody());
   }
 
   @Test
   public void testUpdateTutorial() {
-    when(tutorialService.findById(1L)).thenReturn(new Tutorial());
-    when(tutorialService.save(any(Tutorial.class))).thenReturn(new Tutorial());
-    ResponseEntity<Tutorial> response = tutorialController.updateTutorial(1L, new Tutorial());
+    Tutorial tutorial = new Tutorial("Test", "Test description", false);
+    when(tutorialService.findById(1L)).thenReturn(tutorial);
+    when(tutorialService.save(any(Tutorial.class))).thenReturn(tutorial);
+
+    ResponseEntity<Tutorial> response = tutorialController.updateTutorial(1L, tutorial);
+
     assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(tutorial, response.getBody());
   }
 
   @Test
   public void testDeleteTutorial() {
     ResponseEntity<HttpStatus> response = tutorialController.deleteTutorial(1L);
+
     assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    verify(tutorialService).deleteById(1L);
+    verify(tutorialService, times(1)).deleteById(1L);
   }
 
   @Test
   public void testDeleteAllTutorials() {
     ResponseEntity<HttpStatus> response = tutorialController.deleteAllTutorials();
+
     assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-    verify(tutorialService).deleteAll();
+    verify(tutorialService, times(1)).deleteAll();
   }
 
   @Test
   public void testFindByPublished() {
-    when(tutorialService.findByPublished(true)).thenReturn(Arrays.asList(new Tutorial()));
+    Tutorial tutorial = new Tutorial("Test", "Test description", true);
+    when(tutorialService.findByPublished(true)).thenReturn(Arrays.asList(tutorial));
+
     ResponseEntity<List<Tutorial>> response = tutorialController.findByPublished();
+
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(1, response.getBody().size());
+    assertEquals(tutorial, response.getBody().get(0));
   }
 }
