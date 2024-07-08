@@ -1,22 +1,26 @@
 package com.bezkoder.spring.restapi.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bezkoder.spring.restapi.model.Tutorial;
 import com.bezkoder.spring.restapi.service.TutorialService;
 
+@ExtendWith(MockitoExtension.class)
 public class TutorialControllerTest {
 
   @InjectMocks
@@ -46,7 +50,7 @@ public class TutorialControllerTest {
   @Test
   public void testCreateTutorial() {
     Tutorial tutorial = new Tutorial();
-    when(tutorialService.save(tutorial)).thenReturn(tutorial);
+    when(tutorialService.save(any(Tutorial.class))).thenReturn(tutorial);
     ResponseEntity<Tutorial> response = tutorialController.createTutorial(tutorial);
     assertEquals(HttpStatus.CREATED, response.getStatusCode());
     assertEquals(tutorial, response.getBody());
@@ -56,6 +60,7 @@ public class TutorialControllerTest {
   public void testUpdateTutorial() {
     Tutorial tutorial = new Tutorial();
     when(tutorialService.findById(1L)).thenReturn(tutorial);
+    when(tutorialService.save(any(Tutorial.class))).thenReturn(tutorial);
     ResponseEntity<Tutorial> response = tutorialController.updateTutorial(1L, tutorial);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertEquals(tutorial, response.getBody());
